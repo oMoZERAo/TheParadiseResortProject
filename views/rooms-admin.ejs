@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Rooms</title>
+    <style> #roomsnav { color: #ffffff !important; font-weight: bolder; } </style>
+    <%- include('./partials/head') %>
+</head>
+<body class="">
+
+    <!-- Header Start -->
+    <%- include('./partials/header-admin') %>
+    <!-- Header End -->
+
+    <!-- Main Start -->
+    <main>
+        <section class="text-bg-dark pb-4">
+            <div class="container mt-5 pt-2">
+                <div class="text-center my-5">
+                    <h1><b>Rooms</b></h1>
+                    <h2>Welcome!, You logged as Admin</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="bgtable py-4">
+            <table class="container table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Room Type</th>
+                        <th scope="col">Number of Guests</th>
+                        <th scope="col">Price (Per Day)</th>
+                        <th scope="col">
+                            <a href="/addroom" type="submit" name="add"><img src="/icons/add.svg" alt="add" title="Add" width="25px"></a>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% let count = 1; %>
+                    <% RoomData.forEach(function(RoomData) { %>
+                    <tr>
+                        <th scope="row"><%= count %></th>
+                        <td><%= RoomData.roomtype %></td>
+                        <td><%= RoomData.guests %></td>
+                        <td><%= RoomData.price + " THB" %></td>
+                        <td>
+                            <a href="/room/update/<%= RoomData._id %>" type="submit" name="edit"><img src="/icons/edit.svg" alt="edit" title="Edit" width="25px"></a>
+                            <a onclick="Checker()" href="/room/delete/<%= RoomData._id %>" type="submit" id="deleteBtn" name="remove"><img src="/icons/delete.svg" alt="remove" title="Remove" width="25px"></a>
+                        </td>
+                    </tr>
+                    <% count++ %>
+                    <% }); %>
+
+                    
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <!-- Main End -->
+
+    <!-- Footer Start -->
+        <%- include('./partials/footer-admin') %>
+    <!-- Footer End -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const alertMessage = params.get('alert');
+            if (alertMessage) {
+                alert(alertMessage);
+            }
+        }
+
+        function Checker() {
+            let result = confirm('Do you want to delete?');
+            if (result == false) {
+                event.preventDefault();
+            }
+        }
+    </script>
+        
+</body>
+</html>

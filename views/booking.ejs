@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Booking</title>
+    <style> 
+        #roomsnav { color: #ffffff !important; font-weight: bolder; } 
+        .readonly-input {
+            background-color: var(--bs-secondary-bg) !important;
+        }
+    </style>
+    <%- include('./partials/head'); %>
+</head>
+<body onload="AmountPrice(); todayDate();">
+
+    <!-- Header Start -->
+        <%- include('./partials/header'); %>
+    <!-- Header End -->
+
+    <!-- Main Start -->
+    <main>
+        <section class="text-bg-dark pb-4">
+            <div class="container mt-5 pt-2">
+                <div class="text-center my-5">
+                    <h1><b>Booking</b></h1>
+                    <h2>The Paradise Resort</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="container pt-5">
+            <form action="/payment/<%= RoomData._id %>" method="GET">
+            <div class="row g-5 me-0">
+                <div class="pb-5 col-md-5 col-lg-4 border-start border-end">
+                    <h4 class="mb-3">Room Information</h4>
+                    <label for="roomtype" class="form-label m-0">Room Type</label>
+                    <input type="text" class="form-control readonly-input" name="roomtype" id="roomtype" readonly value="<%= RoomData.roomtype %>">
+                    <label for="guests" class="form-label m-0 mt-2">Guests</label>
+                    <input type="text" class="form-control readonly-input" name="guests" id="guests" readonly value="<%= RoomData.guests %>">
+                    <label for="price" class="form-label m-0 mt-2">Price</label>
+                    <input type="text" class="form-control readonly-input" name="price" id="price" readonly value="<%= RoomData.price %>">
+                    <label for="description" class="form-label m-0 mt-2">Description</label>
+                    <input type="text" class="form-control readonly-input" name="description" readonly id="description" value="<%= RoomData.description %>">
+                </div>
+
+                <div class="col-md-7 col-lg-8 order-md-last border-start border-end">
+
+                    
+                        <div class="row g-3">
+                            <h4 class="mb-3">Booking Information</h4>
+                            <div class="col-lg-6">
+                                <label for="dateFrom" class="form-label m-0">From</label>
+                                <input type="date" class="form-control" name="dateFrom" id="dateFrom" onchange="CalculateDays(); AmountPrice();">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="dateTo" class="form-label m-0">To</label>
+                                <input type="date" class="form-control" name="dateTo" id="dateTo" onchange="CalculateDays(); AmountPrice();">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="AmtDay" class="form-label m-0 mt-2">Amount (Day)</label>
+                                <input type="text" class="form-control readonly-input" name="AmtDay" id="AmtDay" value="1" readonly onchange="AmountPrice()">
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="AmtPay" class="form-label m-0 mt-2">Price (All Day)</label>
+                                <input type="text" class="form-control readonly-input" name="AmtPay" id="AmtPay" value="" readonly>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 mt-4 text-center">
+                            <input type="submit" class="button w-100 btn btn-dark btn-lg" value="Continue to payment" title="Continue to payment">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Main End -->
+
+    <!-- Footer Start -->
+        <%- include('./partials/footer') %>
+    <!-- Footer End -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        function AmountPrice() {
+            let Pr = document.getElementById('price').value
+            let AmountDay = document.getElementById('AmtDay').value
+            document.getElementById('AmtPay').value = Pr * AmountDay
+        }
+
+        function CalculateDays() {
+            const startDate = new Date(document.getElementById("dateFrom").value);
+            const endDate = new Date(document.getElementById("dateTo").value);
+
+            // หาความแตกต่างระหว่างวันที่
+            const timeDifference = Math.abs(endDate - startDate);
+            const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+            document.getElementById("AmtDay").value = daysDifference;
+        }
+
+        function todayDate() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+
+            const year = today.getFullYear();
+            const month = (today.getMonth() + 1).toString().padStart(2, "0");
+            const day = today.getDate().toString().padStart(2, "0");
+            const formattedDate = `${year}-${month}-${day}`;
+
+            const yearTomorrow = tomorrow.getFullYear();
+            const monthTomorrow = (tomorrow.getMonth() + 1).toString().padStart(2, "0");
+            const dayTomorrow = tomorrow.getDate().toString().padStart(2, "0");
+            const formattedDateTomorrow = `${yearTomorrow}-${monthTomorrow}-${dayTomorrow}`;
+
+            document.getElementById("dateFrom").value = formattedDate;
+            document.getElementById("dateTo").value = formattedDateTomorrow;
+        }
+    </script>
+</body>
+</html>

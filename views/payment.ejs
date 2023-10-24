@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Payment</title>
+    <style>
+        #roomsnav { color: #ffffff !important; font-weight: bolder; } 
+        .readonly-input {
+            background-color: var(--bs-secondary-bg) !important;
+        }
+    </style>
+    <%- include('./partials/head') %>
+</head>
+<body onload="todayDate(); todayTime();">
+
+    <!-- Header Start -->
+        <%- include('./partials/header') %>
+    <!-- Header End -->
+
+    <!-- Main Start -->
+    <main class="pb-5">
+        <section class="text-bg-dark pb-4">
+            <div class="container mt-5 pt-2">
+                <div class="text-center my-5">
+                    <h1><b>Payments</b></h1>
+                    <h2>Payments Method</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="container mt-5">
+            <div class="row g-5">
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="mb-3">Payments Method</h4>
+                    <div class="ps-1">
+                        <h5 class="m-0">Tutorial</h5>
+                        <p class="m-0 py-2 mb-2 border-bottom">- In order to make a payment, you will need to transfer funds through the available payment method. Once you've completed the transfer, please provide the details of the transaction, including the date and time of the transfer. Then, click the 'Checkout' button to confirm the transfer.</p>
+                        <p class="m-0"><img src="/icons/bualuang.svg" alt="Bualuang" title="Bualuang Bank" width="20px"> Bualuang Bank: 1-123-123456</p>
+                        <p class="m-0"><img src="/icons/kasikorn.svg" alt="Kasikorn" title="Kasikorn Bank" width="20px"> Kasikorn Bank: 1-123-123456</p>
+                        <p class="m-0"><img src="/icons/krungthai.svg" alt="Krungthai" title="Krungthai Bank" width="20px"> Krungthai Bank: 1-123-123456</p>
+                        <p class="m-0"><img src="/icons/krungsri.svg" alt="Krungsri" title="Krungsri Bank" width="20px"> Krungsri Bank: 1-123-123456</p>
+                        <p class="m-0"><img src="/icons/scb.svg" alt="SCB" title="SCB Bank" width="20px"> SCB Bank: 1-123-123456</p>
+                        <p class="m-0 mt-2"><img src="/icons/ThaiQR.jpg" alt="Promtpay" title="Promtpay" width="20px" style="border-radius: 50%;"> Promtpay: 012-456-7890</p>
+                        <p class="m-0"><img src="/icons/truemoney.svg" alt="Truemoney Wallet" title="TrueMoney Wallet" width="20px"> TrueMoney Wallet: 012-456-7890</p>
+                    </div>
+                </div>
+
+                <div class="col-md-7 col-lg-8">
+                <h4 class="mb-3">Transaction information</h4>
+                <form action="/payment/confirm" method="POST">
+                    <input type="text" style="display: none;" id="userId" name="userId" value="<%= UserData._id %>" readonly>
+                    <input type="text" style="display: none;" id="tel" name="tel" value="<%= UserData.tel %>" readonly>
+                    <input type="text" style="display: none;" id="roomId" name="roomId" readonly>
+                    <input type="text" style="display: none;" id="dateFrom" name="dateFrom" readonly>
+                    <input type="text" style="display: none;" id="dateTo" name="dateTo" readonly>
+
+                    <div class="row g-3">
+
+                        <div class="col-12">
+                            <label for="name" class="form-label">Name in transaction</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid name is required.
+                            </div>
+                        </div>
+            
+                        <div class="col-12">
+                            <label for="paymentSelect" class="form-label">Payment Method</label>
+                            <select class="form-select" id="paymentSelect" name="paymentSelect" aria-label="Payment Method">
+                                <option selected>Select payment method...</option>
+                                <option value="Bualuang">Bualuang Bank: 1-123-123456</option>
+                                <option value="Kasikorn">Kasikorn Bank: 1-123-123456</option>
+                                <option value="Krungthai">Krungthai Bank: 1-123-123456</option>
+                                <option value="Krungsri">Krungsri Bank: 1-123-123456</option>
+                                <option value="SCB">SCB Bank: 1-123-123456</option>
+                                <option value="Promptpay">Promptpay: 012-345-6789</option>
+                                <option value="TrueWallet">TrueMoney Wallet: 012-345-6789</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a payment method.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="datePicker" class="form-label">Date</label>
+                            <input type="date" class="form-control" name="transferDate" id="datePicker">
+                            <div class="invalid-feedback">
+                                Please select a date.
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-6">
+                            <label for="timePicker" class="form-label">Time</label>
+                            <input type="time" class="form-control" name="transferTime" id="timePicker">
+                            <div class="invalid-feedback">
+                                Please select a time.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="roomType" class="form-label">Room Type</label>
+                            <input type="text" class="form-control readonly-input" name="roomType" id="roomType" value="" readonly>
+                            <div class="invalid-feedback">
+                                Please enter a room type.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="guests" class="form-label">Number of Guests</label>
+                            <input type="text" class="form-control readonly-input" name="guests" id="guests" value="" readonly>
+                            <div class="invalid-feedback">
+                                Please enter a number of guests.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="amountDay" class="form-label">Amount of Day</label>
+                            <input type="text" class="form-control readonly-input" name="amountDay" id="amountDay" value="" readonly>
+                            <div class="invalid-feedback">
+                                Please enter a amount of day.
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="amountMoney" class="form-label">Paid (THB)</label>
+                            <input type="text" class="form-control readonly-input" name="amountMoney" id="amountMoney" value="" readonly>
+                            <div class="invalid-feedback">
+                                Please enter a amount of money.
+                            </div>
+                        </div>
+                    </div>
+        
+                    <hr class="my-5">
+        
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Checkout</button>
+                </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Main End -->
+
+    <!-- Footer Start -->
+        <%- include('./partials/footer') %>
+    <!-- Footer End -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        function todayDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = (today.getMonth() + 1).toString().padStart(2, "0");
+            const day = today.getDate().toString().padStart(2, "0");
+            const formattedDate = `${year}-${month}-${day}`;
+
+
+            document.getElementById("datePicker").value = formattedDate;
+        }
+
+        function todayTime() {
+            const today = new Date();
+            const hours = today.getHours().toString().padStart(2, "0");
+            const minutes = today.getMinutes().toString().padStart(2, "0");
+            const formattedTime = `${hours}:${minutes}`;
+            document.getElementById("timePicker").value = formattedTime;
+        }
+
+        let data = window.location.search;
+        let params = new URLSearchParams(data)
+
+        const roomtype = params.get("roomtype")
+        const guests = params.get("guests")
+        const price = params.get("price")
+        const description = params.get("description")
+        const AmtDay = params.get("AmtDay")
+        const AmtPay = params.get("AmtPay")
+        
+        document.getElementById("roomType").value = roomtype
+        document.getElementById("guests").value = guests
+        document.getElementById("amountDay").value = AmtDay
+        document.getElementById("amountMoney").value = AmtPay
+
+        const url = new URL(window.location.href);
+        const id = url.pathname.split("/").pop();
+        const dateFrom = params.get("dateFrom")
+        const dateTo = params.get("dateTo")
+
+        document.getElementById("roomId").value = id;
+        document.getElementById("dateFrom").value = dateFrom
+        document.getElementById("dateTo").value = dateTo
+
+    </script>
+</body>
+</html>

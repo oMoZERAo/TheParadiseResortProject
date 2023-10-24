@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Reservation</title>
+    <%- include('./partials/head'); %>
+    <style>
+        #reservationnav { color: #ffffff !important; font-weight: bolder; }
+        .btn-warning {
+            --bs-btn-color: #000;
+            --bs-btn-bg: #ffc107;
+            --bs-btn-border-color: #ffc107;
+            --bs-btn-hover-color: #000;
+            --bs-btn-hover-bg: #ffca2c;
+            --bs-btn-hover-border-color: #ffc720;
+            --bs-btn-focus-shadow-rgb: 217,164,6;
+            --bs-btn-active-color: #000;
+            --bs-btn-active-bg: #ffcd39;
+            --bs-btn-active-border-color: #ffc720;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #000;
+            --bs-btn-disabled-bg: #ffc107;
+            --bs-btn-disabled-border-color: #ffc107;
+        }
+
+        .btn-outline-dark {
+            --bs-btn-color: #212529;
+            --bs-btn-border-color: #212529;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #212529;
+            --bs-btn-hover-border-color: #212529;
+            --bs-btn-focus-shadow-rgb: 33,37,41;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #212529;
+            --bs-btn-active-border-color: #212529;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #212529;
+            --bs-btn-disabled-bg: transparent;
+            --bs-btn-disabled-border-color: #212529;
+            --bs-gradient: none;
+        }
+    </style>
+</head>
+<body class="">
+
+    <!-- Header Start -->
+        <%- include('./partials/header-admin'); %>
+    <!-- Header End -->
+
+    <!-- Main Start -->
+    <main>
+        <section class="text-bg-dark pb-4">
+            <div class="container mt-5 pt-2">
+                <div class="text-center my-5">
+                    <h1><b>Reservation</b></h1>
+                    <h2>Reservation Management</h2>
+                </div>
+            </div>
+        </section>
+
+        
+            <div class="container py-5">
+                <ul class="nav nav-tabs nav-pills nav-fill gap-2 p-1 small bg-dark rounded-5 shadow-sm" id="myTabs" role="tablist" style="--bs-nav-link-color: var(--bs-white); --bs-nav-link-hover-color: var(--bs-white); --bs-nav-pills-link-active-color: var(--bs-dark); --bs-nav-pills-link-active-bg: var(--bs-white);">
+                    <li class="nav-item" role="presentation">
+                    <a class="nav-link active rounded-5" id="tab1" data-bs-toggle="tab" type="button" role="tab" href="#content1">Pending</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                    <a class="nav-link rounded-5" id="tab2" data-bs-toggle="tab" type="button" role="tab" href="#content2">Success</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                    <a class="nav-link rounded-5" id="tab3" data-bs-toggle="tab" type="button" role="tab" href="#content3">Failed</a>
+                    </li>
+                </ul>
+
+                <section class="container p-2 py-4 table-responsive table-responsive-sm">
+                    <div class="tab-content pt-4">
+
+                        <div id="content1" class="tab-pane fade show active">
+                            <table id="pendingTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Tel</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Room Type</th>
+                                        <th scope="col">From</th>
+                                        <th scope="col">To</th>
+                                        <th scope="col">Paid</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Change</th>
+                                    </tr>
+                                </thead>
+                    
+                                <tbody>
+                                    <% let count = 1; %>
+                                    <% PendingData.forEach(function(PendingData) { %>
+                                    <tr>
+                                        <th scope="row"><%= count %></th>
+                                        <td><%= PendingData.name %></td>
+                                        <td><%= PendingData.tel %></td>
+                                        <td><%= PendingData.transferDate %></td>
+                                        <td><%= PendingData.transferTime %></td>
+                                        <td><%= PendingData.roomType %></td>
+                                        <td><%= PendingData.dateFrom %></td>
+                                        <td><%= PendingData.dateTo %></td>
+                                        <td><%= PendingData.amountMoney %></td>
+                                        <td class="circle"><%= PendingData.transactionStatus %></td>
+                                        <td class="d-flex">
+                                            <form action="/admin/reservation/status/<%= PendingData._id %>" method="POST" class="ps-1">
+                                                <button onclick="Checker()" class="btn btn-success btn-outline-dark p-1" style="width: 35px; height: 20px;" title="S" value="Success" type="submit" id="PendingtoSuccess" name="changeStatus"></button>
+                                            </form>
+                                            <form action="/admin/reservation/status/<%= PendingData._id %>" method="POST" class="ps-1">
+                                                <button onclick="Checker()" class="btn btn-danger btn-outline-dark p-1" style="width: 35px; height: 20px;" title="F" value="Failed" type="submit" id="PendingtoFailed" name="changeStatus"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% count++ %>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="content2" class="tab-pane fade">
+                            <table id="successTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Tel</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Room Type</th>
+                                        <th scope="col">From</th>
+                                        <th scope="col">To</th>
+                                        <th scope="col">Paid</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Change</th>
+                                    </tr>
+                                </thead>
+                    
+                                <tbody>
+                                    <% let count1 = 1; %>
+                                    <% SuccessData.forEach(function(SuccessData) { %>
+                                    <tr>
+                                        <th scope="row"><%= count1 %></th>
+                                        <td><%= SuccessData.name %></td>
+                                        <td><%= SuccessData.tel %></td>
+                                        <td><%= SuccessData.transferDate %></td>
+                                        <td><%= SuccessData.transferTime %></td>
+                                        <td><%= SuccessData.roomType %></td>
+                                        <td><%= SuccessData.dateFrom %></td>
+                                        <td><%= SuccessData.dateTo %></td>
+                                        <td><%= SuccessData.amountMoney %></td>
+                                        <td class="circle"><%= SuccessData.transactionStatus %></td>
+                                        <td class="d-flex">
+                                            <form action="/admin/reservation/status/<%= SuccessData._id %>" method="POST" class="ps-1">
+                                                <button onclick="Checker()" class="btn btn-warning btn-outline-dark p-1" style="width: 35px; height: 20px;" title="P" value="Pending" type="submit" id="SuccesstoPending" name="changeStatus"></button>
+                                            </form>
+                                            <form action="/admin/reservation/status/<%= SuccessData._id %>" method="POST" class="ps-1">
+                                                <button onclick="Checker()" class="btn btn-danger btn-outline-dark p-1" style="width: 35px; height: 20px;" title="F" value="Failed" type="submit" id="SuccesstoFailed" name="changeStatus"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% count1++ %>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="content3" class="tab-pane fade">
+                            <table id="failedTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Tel</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Room Type</th>
+                                        <th scope="col">From</th>
+                                        <th scope="col">To</th>
+                                        <th scope="col">Paid</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Change</th>
+                                    </tr>
+                                </thead>
+                    
+                                <tbody>
+                                    <% let count2 = 1; %>
+                                    <% FailedData.forEach(function(FailedData) { %>
+                                    <tr>
+                                        <th scope="row"><%= count2 %></th>
+                                        <td><%= FailedData.name %></td>
+                                        <td><%= FailedData.tel %></td>
+                                        <td><%= FailedData.transferDate %></td>
+                                        <td><%= FailedData.transferTime %></td>
+                                        <td><%= FailedData.roomType %></td>
+                                        <td><%= FailedData.dateFrom %></td>
+                                        <td><%= FailedData.dateTo %></td>
+                                        <td><%= FailedData.amountMoney %></td>
+                                        <td class="circle"><%= FailedData.transactionStatus %></td>
+                                        <td class="d-flex">
+                                            <form action="/admin/reservation/status/<%= FailedData._id %>" method="POST" class="ps-1">
+                                                <button onclick="Checker()" class="btn btn-warning btn-outline-dark p-1" style="width: 35px; height: 20px;" title="P" value="Pending" type="submit" id="FailedtoPending" name="changeStatus"></button>
+                                            </form>
+                                            <form action="/admin/reservation/status/<%= FailedData._id %>" method="POST" class="ps-1">
+                                                <button onclick="Checker()" class="btn btn-success btn-outline-dark p-1" style="width: 35px; height: 20px;" title="S" value="Success" type="submit" id="FailedtoSuccess" name="changeStatus"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% count2++ %>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+    </main>
+    <!-- Main End -->
+
+    <!-- Footer Start -->
+        <%- include('./partials/footer-admin') %>
+    <!-- Footer End -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        const pendingTable = document.getElementById("pendingTable");
+        const successTable = document.getElementById("successTable");
+        const failedTable = document.getElementById("failedTable");
+        svgYellowString = `<div style="display: flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="yellow" style="border: 2px solid black; border-radius: 50%;" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg><span style="padding-left: 2px"> Pending</span></div>`
+        svgGreenString = `<div style="display: flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="#00e52e" style="border: 2px solid black; border-radius: 50%;" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg><span style="padding-left: 2px"> Success</span></div>`
+        svgRedString = `<div style="display: flex; align-items: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="red" style="border: 2px solid black; border-radius: 50%;" viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"/></svg><span style="padding-left: 2px"> Failed</span></div>`
+
+        try {
+            for (let i = 0; i < pendingTable.rows.length; i++) {
+                for (let j = 0; j < pendingTable.rows[i].cells.length; j++) {
+                    const cell = pendingTable.rows[i].cells[j];
+                    if (cell.classList.contains("circle")) {
+                        cell.innerHTML = svgYellowString;
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+        try {
+            for (let i = 0; i < successTable.rows.length; i++) {
+                for (let j = 0; j < successTable.rows[i].cells.length; j++) {
+                    const cell = successTable.rows[i].cells[j];
+                    if (cell.classList.contains("circle")) {
+                        cell.innerHTML = svgGreenString;
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        
+        try {
+            for (let i = 0; i < failedTable.rows.length; i++) {
+                for (let j = 0; j < failedTable.rows[i].cells.length; j++) {
+                    const cell = failedTable.rows[i].cells[j];
+                    if (cell.classList.contains("circle")) {
+                        cell.innerHTML = svgRedString;
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+        $(document).ready(function () {
+            $('#myTabs button').on('click', function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        });
+
+        function Checker() {
+            let result = confirm('Are you sure?');
+            if (result == false) {
+                event.preventDefault();
+            }
+        }
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const alertMessage = params.get('alert');
+            if (alertMessage) {
+                alert(alertMessage);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Edit Rooms</title>
+    <style> #roomsnav { color: #ffffff !important; font-weight: bolder; } </style>
+    <%- include('./partials/head') %>
+</head>
+<body class="">
+
+    <!-- Header Start -->
+    <%- include('./partials/header-admin') %>
+    <!-- Header End -->
+
+    <!-- Main Start -->
+    <main>
+        <section class="text-bg-dark pb-4">
+            <div class="container mt-5 pt-2">
+                <div class="text-center my-5">
+                    <h1><b>Edit Rooms</b></h1>
+                    <h2>Only admin can acess this page</h2>
+                    <h3><%= "Room ID: " + RoomData._id %></h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="container ms-md-5 p-4 my-2">
+            <form action="/room/update/<%= RoomData._id %>" method="POST" class="text-center mx-auto">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label for="roomtype" class="form-label">Room Type</label>
+                        <input type="text" class="form-control" value="<%= RoomData.roomtype %>" name="roomtype" id="roomtype" placeholder="Enter type of room">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="guests" class="form-label">Number of Guests</label>
+                        <input type="text" class="form-control" value="<%= RoomData.guests %>" name="guests" id="guests" placeholder="Enter limit of guests">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="price" class="form-label">Price (Per Day)</label>
+                        <input type="text" class="form-control" value="<%= RoomData.price %>" name="price" id="price" placeholder="Enter price of room">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="description" class="form-label">Description</label>
+                        <input type="text" class="form-control" value="<%= RoomData.description %>" name="description" id="description" placeholder="Enter description of room">
+                    </div>
+
+                </div>
+
+                <div class="pt-4 mt-4 text-center">
+                    <input type="submit" class="button w-100 btn btn-dark btn-lg" value="Update Room" title="Update">
+                </div>
+            </form>
+        </section>
+    </main>
+    <!-- Main End -->
+
+    <!-- Footer Start -->
+        <%- include('./partials/footer-admin') %>
+    <!-- Footer End -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

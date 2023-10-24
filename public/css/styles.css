@@ -1,0 +1,47 @@
+.carousel-inner > .carousel-item > img {
+    height: 600px;
+}
+
+.bgtable {
+    background-color: white;
+}
+
+.btn-warning {
+    --bs-btn-color: #000;
+    --bs-btn-bg: #0098d3;
+    --bs-btn-border-color: #0098d3;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #0088be;
+    --bs-btn-hover-border-color: #1599ce;
+    --bs-btn-focus-shadow-rgb: 217,164,6;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #006b96;
+    --bs-btn-active-border-color: #137095;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: #0098d3;
+    --bs-btn-disabled-border-color: #0098d3;
+}
+
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+body, main {
+    min-height: 100vh;
+}
